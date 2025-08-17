@@ -1,0 +1,26 @@
+class Solution {
+public:
+    double new21Game(int n, int k, int maxpts) {
+        double ans = 0;
+        vector<double> prob(k, 0);
+        if (k>0) prob[0] = 1;
+        else {
+            return 1;
+        }
+        double sum = 1;
+        for (int i=1; i<min(k, maxpts); i++) {
+            prob[i] = sum/maxpts;
+            sum += prob[i];
+        }
+        for (int i=maxpts; i<k; i++) {
+            prob[i] = sum/maxpts;
+            sum += prob[i];
+            sum -= prob[i-maxpts];
+        }
+        int i=max(0, k-maxpts);
+        for (i; i<k; i++) {
+            ans += prob[i]*((min(n-i, maxpts) - (k-i-1))/(double)maxpts);
+        }
+        return ans;
+    }
+};
